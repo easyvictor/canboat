@@ -37,6 +37,15 @@ add_subdirectory(n2kd)
 add_subdirectory(nmea0183)
 add_subdirectory(socketcan-writer)
 
+set(BIN_FILES
+	"n2kd/canboat.sh")
+
+set(SERVICE_FILES
+	"config/canboat.service")
+
+install(FILES ${BIN_FILES} DESTINATION /usr/bin COMPONENT binaries PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+install(FILES ${SERVICE_FILES} DESTINATION /etc/systemd/system COMPONENT config PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
+
 # CPack configuration
 set(CPACK_GENERATOR "DEB")
 if("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "arm")
@@ -51,4 +60,6 @@ set(CPACK_PACKAGE_VERSION_PATCH "0")
 set(CPACK_DEBIAN_PACKAGE_DEPENDS "")
 set(CPACK_PACKAGE_DESCRIPTION "canboat from CMake")
 set(CPACK_PACKAGE_CONTACT "Jonathan Lovegren jalovegren@gmail.com")
+set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${CMAKE_CURRENT_SOURCE_DIR}/config/conffiles;${CMAKE_CURRENT_SOURCE_DIR}/config/postinst")
+
 include(CPack)
